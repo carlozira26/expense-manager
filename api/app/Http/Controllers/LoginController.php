@@ -8,9 +8,23 @@ use App\User;
 
 class LoginController extends Controller
 {
-    public function login(Request $request){
+    private $response = array(
+      "status" => false,
+      "data" => array(),
+      "message" => ""
+    );
 
-        
-        return "test";
+    public function login(Request $request){
+      $email = $request->input('email');
+      $password = $request->input('password');
+
+      $user = User::where('email',$email)
+        ->where('password',md5($password))->first();
+
+      if($user){
+        $this->response['data'] = $user;
+        $this->response['status'] = true;
+      }
+      return $this->response;
     }
 }
