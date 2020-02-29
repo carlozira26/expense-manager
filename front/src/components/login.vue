@@ -5,6 +5,9 @@
                 <v-card-title primary-title :class="colorSelected" class="white--text">
 					Expense Manager
                 </v-card-title>
+                <v-card-text>
+                    <h3 class="subheading red--text text-center pa-1" v-if="isInvalildCredential"><v-icon color="red">error_outline</v-icon> Invalid Credentials</h3>
+                </v-card-text>
                 <v-card-actions style="padding:20px">
                     <v-form v-on:submit.prevent="login">
                         <v-layout row wrap>
@@ -54,11 +57,11 @@
                     password: '',
                 },
                 colorSelected: "green darken-4",
+                isInvalildCredential : false
             }
         },
         methods : {
             login : function(){
-                console.log(this.model.email, this.model.password);
                 let
                 _this = this,
                 axiosInstance = axios.create({
@@ -74,11 +77,13 @@
                     if(res.data.status!=false){
                         VueCookies.set(_this.cookieKey, res.data);
                         _this.$router.push('/dashboard');
+                    }else{
+                        _this.isInvalildCredential = true
                     }
                 });
             }
         }
-    }
+    };
 </script>
 <style>
     #login{

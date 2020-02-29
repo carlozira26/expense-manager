@@ -95,6 +95,12 @@
 	import axios from "axios";
 	export default {
 		created : function(){
+			this.role = VueCookies.get(this.cookieKey).data.role;
+			
+			if(this.role != 1){
+				this.$router.push('/dashboard');
+			}
+			
 			this.token = VueCookies.get(this.cookieKey).token;
 			this.fetchRoles();
 		},
