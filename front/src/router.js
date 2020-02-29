@@ -8,6 +8,7 @@ import NavigationModule from './components/navigation.vue';
 import DashboardModule from './components/dashboard.vue';
 import UsersModule from './components/users.vue';
 import RolesModule from './components/roles.vue';
+import CategoriesModule from './components/categories.vue';
 
 import LogoutModule from './components/logout.vue';
 
@@ -36,6 +37,11 @@ const router =  new Router({
                     path : '/users',
                     name : 'users',
                     component: UsersModule,
+                },
+                {
+                    path : '/expense-category',
+                    name : 'categories',
+                    component: CategoriesModule,
                 },
                 {
                     path : '/logout',
