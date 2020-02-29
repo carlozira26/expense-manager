@@ -9,6 +9,7 @@ import DashboardModule from './components/dashboard.vue';
 import UsersModule from './components/users.vue';
 import RolesModule from './components/roles.vue';
 import CategoriesModule from './components/categories.vue';
+import ExpensesModule from './components/expenses.vue';
 
 import LogoutModule from './components/logout.vue';
 
@@ -42,6 +43,11 @@ const router =  new Router({
                     path : '/expense-category',
                     name : 'categories',
                     component: CategoriesModule,
+                },
+                {
+                    path : '/expenses',
+                    name : 'expenses',
+                    component: ExpensesModule,
                 },
                 {
                     path : '/logout',

@@ -16,6 +16,7 @@ Route::post('/users/login', 'LoginController@login');
 Route::post('/users/add', 'UsersController@add');
 Route::post('/users/update', 'UsersController@update');
 Route::post('/users/delete', 'UsersController@delete');
+Route::post('/users/changepass', 'UsersController@changePass');
 Route::get('/users/list', 'UsersController@fetch');
 
 Route::get('/roles/list', 'RolesController@fetch');
@@ -27,3 +28,8 @@ Route::get('/categories/list', 'CategoriesController@fetch');
 Route::post('/categories/add', 'CategoriesController@add');
 Route::post('/categories/update', 'CategoriesController@update');
 Route::post('/categories/delete', 'CategoriesController@delete');
+
+Route::get('/expenses/list', 'ExpensesController@fetch');
+Route::post('/expenses/add', 'ExpensesController@add');
+Route::post('/expenses/update', 'ExpensesController@update');
+Route::post('/expenses/delete', 'ExpensesController@delete');

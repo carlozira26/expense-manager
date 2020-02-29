@@ -29,12 +29,17 @@ export default {
         numberWithCommas: function(x) {
             return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         },
+
         truncateText: function(text, length, clamp){
             clamp = clamp || '...';
             var node = document.createElement('div');
             node.innerHTML = text;
             var content = node.textContent;
             return content.length > length ? content.slice(0, length) + clamp : content;
+        },
+
+        numberOnly : function(x){
+            return x.replace(/[^0-9.]/g, '');
         }
     }
 };

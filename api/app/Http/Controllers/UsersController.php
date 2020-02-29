@@ -74,4 +74,22 @@ class UsersController extends Controller
       }
       return $this->response;
     }
+
+    public function changePass(Request $request){
+      $userid = $request->input('userid');
+      $oldpass = md5($request->input('oldpass'));
+      $newpass = md5($request->input('newpass'));
+
+      $user = User::where('id',$userid)->where('password',$oldpass)->first();
+      if($user){
+        $user = User::where('id',$userid)->update(array(
+          'password' => $newpass
+        ));
+        $this->response['status'] = true;
+        $this->response['message'] = "Password has been updated!";
+      }else{
+        $this->response['message'] = "Password Incorrect!";
+      }
+      return $this->response;
+    }
 }

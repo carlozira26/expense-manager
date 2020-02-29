@@ -116,6 +116,11 @@
 	import axios from "axios";
 	export default {
 		created : function(){
+			this.role = VueCookies.get(this.cookieKey).data.role;
+			
+			if(this.role != 1){
+				this.$router.push('/dashboard');
+			}
 			this.token = VueCookies.get(this.cookieKey).token;
 			this.fetchRoles();
 			this.fetchUsers();
@@ -202,7 +207,7 @@
 				this.form.id = this.userlist[id].id;
 				this.form.name = this.userlist[id].fullname;
 				this.form.email = this.userlist[id].email;
-				this.form.role = this.userlist[id].role;
+				this.form.role = parseInt(this.userlist[id].role);
 				this.adduser = true;
 			},
 			deleteUser : function(id){
