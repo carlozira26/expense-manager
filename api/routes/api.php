@@ -22,3 +22,8 @@ Route::get('/roles/list', 'RolesController@fetch');
 Route::post('/roles/add', 'RolesController@add');
 Route::post('/roles/update', 'RolesController@update');
 Route::post('/roles/delete', 'RolesController@delete');
+
+Route::get('/categories/list', 'CategoriesController@fetch');
+Route::post('/categories/add', 'CategoriesController@add');
+Route::post('/categories/update', 'CategoriesController@update');
+Route::post('/categories/delete', 'CategoriesController@delete');
