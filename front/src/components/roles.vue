@@ -40,10 +40,10 @@
 		</v-card>
 		<v-dialog v-model="addrole" width="30%" persistent>
 				<v-card>
+					<v-card-title class="green darken-4 white--text" v-if="formType=='add'">Add Role</v-card-title>
+					<v-card-title class="green darken-4 white--text" v-if="formType=='update'">Update Role</v-card-title>
+					<v-card-title class="green darken-4 white--text" v-if="formType=='delete'">Delete Role</v-card-title>
 					<v-form ref="vForm" v-on:submit.prevent="submitForm">
-						<v-card-title class="green darken-4 white--text" v-if="formType=='add'">Add Role</v-card-title>
-						<v-card-title class="green darken-4 white--text" v-if="formType=='update'">Update Role</v-card-title>
-						<v-card-title class="green darken-4 white--text" v-if="formType=='delete'">Delete Role</v-card-title>
 						<template v-if="formType!='delete'">
 						<v-card-text>
 							<v-container>
@@ -71,21 +71,21 @@
 								Are you sure you want to <i><b>Delete</b></i> this role?
 							</v-container>
 						</template>
-						<v-card-actions>
-							<v-btn type="submit" v-if="formType=='update'" @click="deleteRole()">Delete</v-btn>
-							<v-spacer></v-spacer>
-							<v-btn @click="addrole=false">Cancel</v-btn>
-							<v-btn type="submit" v-if="formType=='add'">Save</v-btn>
-							<template v-else>
-								<template v-if="form.rolename != 'admin' && formType!='delete'">
-									<v-btn type="submit">Update</v-btn>
-								</template>
-								<template v-else>
-									<v-btn type="submit">Delete</v-btn>
-								</template>
-							</template>
-						</v-card-actions>
 					</v-form>
+					<v-card-actions>
+						<v-btn v-if="formType=='update'" @click="deleteRole()">Delete</v-btn>
+						<v-spacer></v-spacer>
+						<v-btn @click="addrole=false">Cancel</v-btn>
+						<v-btn type="submit" v-if="formType=='add'" @click="submitForm">Save</v-btn>
+						<template v-else>
+							<template v-if="form.rolename != 'admin' && formType!='delete'">
+								<v-btn @click="submitForm">Update</v-btn>
+							</template>
+							<template v-else>
+								<v-btn @click="submitForm">Delete</v-btn>
+							</template>
+						</template>
+					</v-card-actions>
 				</v-card>
 		</v-dialog>
 	</v-container>
@@ -159,15 +159,14 @@
 					})
 					.post(this.apiUrl+'/roles/'+type,formData)
 					.then(function(response) {
-						console.log(response);
 						_this.addrole = false;
 						if(response.data.status){
 							_this.eventHub.$emit('showSnackBar',{icon:'check',color:'success',message:response.data.message})
+							_this.fetchRoles();
 						}else{
 							_this.eventHub.$emit('showSnackBar',{icon:'close',color:'error',message:'Error while submitting.'})							
 						}
 					});
-					this.fetchRoles();
 				}
 			},
 			updateRole : function(id){
@@ -177,10 +176,9 @@
 				this.form.description = this.roleslist[id].description;
 				this.addrole = true;
 			},
-			deleteRole : function(id){
+			deleteRole : function(){
 				this.formType = "delete";
-				this.form.id = this.roleslist[id].id;
 			}
 		}
-	}
+	};
 </script>

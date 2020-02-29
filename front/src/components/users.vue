@@ -29,7 +29,7 @@
 						<tr v-else v-for="(user,index) in userlist" :key="index" @click="updateUser(index)">
 							<td class="text-center">{{user.fullname}}</td>
 							<td class="text-center">{{user.email}}</td>
-							<td class="text-center">{{user.role}}</td>
+							<td class="text-center">{{checkRoles(user.role)}}</td>
 							<td class="text-center">{{user.created_at}}</td>
 						</tr>
 					</tbody>
@@ -68,12 +68,17 @@
 										<v-flex md9>
 											<v-select solo v-model="form.role" :rules="[formRules.required]" :items="roleList" item-text='text' item-value="value"></v-select>
 										</v-flex>
-										<template v-if="form.role != 'admin' || formType=='add'">
+										<template v-if="form.role != 1 || formType=='add'">
 											<v-flex md3 class="pa-3 text-right">
 												Password
 											</v-flex>
 											<v-flex md9>
-												<v-text-field type="password" :rules="[formRules.required]" v-model="form.password" solo></v-text-field>
+												<template v-if="formType=='add'">
+													<v-text-field type="password" :rules="[formRules.required]" v-model="form.password" solo></v-text-field>
+												</template>
+												<template v-if="formType=='update'">
+													<v-text-field type="password" v-model="form.password" solo></v-text-field>
+												</template>
 											</v-flex>
 										</template>
 									</v-layout>
@@ -87,18 +92,18 @@
 						</template>
 					</v-form>
 					<v-card-actions>
-						<template v-if="form.role != 'admin'">
+						<template v-if="form.role != 1">
 							<v-btn v-if="formType=='update'" @click="deleteUser()">Delete</v-btn>
 						</template>
 						<v-spacer></v-spacer>
 						<v-btn @click="adduser=false">Cancel</v-btn>
 						<v-btn  @click="submitForm" v-if="formType=='add'">Save</v-btn>
 						<template v-else>
-							<template v-if="form.role != 'admin' && formType=='update'">
-								<v-btn  @click="submitForm">Update</v-btn>
+							<template v-if="form.role != 1 && formType=='update'">
+								<v-btn @click="submitForm">Update</v-btn>
 							</template>
-							<template v-if="form.role != 'admin' && formType=='delete'">
-								<v-btn  @click="submitForm">Delete</v-btn>
+							<template v-if="form.role != 1 && formType=='delete'">
+								<v-btn @click="submitForm">Delete</v-btn>
 							</template>
 						</template>
 					</v-card-actions>
@@ -112,6 +117,7 @@
 	export default {
 		created : function(){
 			this.token = VueCookies.get(this.cookieKey).token;
+			this.fetchRoles();
 			this.fetchUsers();
 		},
 		data: function(){
@@ -135,7 +141,7 @@
 					role : '',
 					password : ''
 				},
-				roleList : [{text : 'Administrator', value : 'admin'},{text : 'User', value : 'user'}],
+				roleList : [],
 				formType : 'add',
 			}
 		},
@@ -162,7 +168,6 @@
 				this.adduser=true;
 			},
 			submitForm : function(){
-				console.log("test");
 				let _this = this,
 				type = _this.formType,
 				formData = new FormData();
@@ -185,11 +190,11 @@
 						_this.adduser = false;
 						if(response.data.status){
 							_this.eventHub.$emit('showSnackBar',{icon:'check',color:'success',message:response.data.message})
+							_this.fetchUsers();
 						}else{
 							_this.eventHub.$emit('showSnackBar',{icon:'close',color:'error',message:'Error while submitting.'})							
 						}
 					});
-					this.fetchUsers();
 				}
 			},
 			updateUser : function(id){
@@ -202,7 +207,33 @@
 			},
 			deleteUser : function(id){
 				this.formType = "delete";
+			},
+			fetchRoles : function(){
+				let _this = this;
+				axios.create({
+					headers : {
+						'Authorization' : `Bearer ${this.token}`
+					}
+				})
+				.get(this.apiUrl + '/roles/list')
+				.then(function(res){
+					for(let role in res.data.data){
+						_this.roleList.push({
+							text : res.data.data[role].role,
+							value: res.data.data[role].id
+						});
+					}
+				})
+			},
+			checkRoles : function(id){
+				let ret = "";
+				for(let i in this.roleList){
+					if(this.roleList[i].value == id){
+						ret = this.roleList[i].text;
+					}
+				}
+				return ret;
 			}
 		}
-	}
+	};
 </script>

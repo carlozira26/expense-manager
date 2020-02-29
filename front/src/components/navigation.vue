@@ -24,7 +24,7 @@
 						</v-list-item-content>
 					</v-list-item>
 					<br>
-					<v-list-item active-class="highlighted green darken-2" class="v-list-item" to="/dashboard">
+					<v-list-item active-class="highlighted green darken-4" class="v-list-item" to="/dashboard">
 						<v-list-item-action>
 							<v-icon>dashboard</v-icon>
 						</v-list-item-action>
@@ -35,10 +35,10 @@
 						<template v-slot:activator>
 							<v-list-item-title>User Management</v-list-item-title>
 						</template>
-						<v-list-item active-class="highlighted green darken-2 white--text" link to="/roles">
+						<v-list-item active-class="highlighted green darken-4 white--text" link to="/roles">
 							<v-list-item-title>Roles</v-list-item-title>
 						</v-list-item>
-						<v-list-item active-class="highlighted green darken-2 white--text" link to="/users">
+						<v-list-item active-class="highlighted green darken-4 white--text" link to="/users">
 							<v-list-item-title>Users</v-list-item-title>
 						</v-list-item>
 					</v-list-group>
@@ -50,10 +50,10 @@
 							</v-list-item-content>
 						</template>
 
-						<v-list-item link to="/expense-category" active-class="highlighted green darken-2 white--text">
+						<v-list-item link to="/expense-category" active-class="highlighted green darken-4 white--text">
 							<v-list-item-title>Expense Categories</v-list-item-title>
 						</v-list-item>
-						<v-list-item link to="/expenses" active-class="highlighted green darken-2 white--text">
+						<v-list-item link to="/expenses" active-class="highlighted green darken-4 white--text">
 							<v-list-item-title>Expenses</v-list-item-title>
 						</v-list-item>
 					</v-list-group>
